@@ -1,0 +1,27 @@
+php:
+  build: .
+  ports:
+    - 80:80
+  volumes:
+    - "./:/var/www"
+  tty: true
+  command: /usr/sbin/apache2ctl -D FOREGROUND
+  links: 
+    - db
+
+db:
+ image: "mysql:5.7"
+ volumes:
+  - "/var/lib/mysql"
+ environment:
+  - MYSQL_ROOT_PASSWORD=root
+  - MYSQL_DATABASE=database
+ ports:
+  - 3306:3306
+
+phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8580:80"
+    links:
+      - db
